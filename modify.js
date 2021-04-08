@@ -54,9 +54,29 @@ const flap = (f, defaultZ) => {
   }
 }
 
-
 const lut = {
-  // boundary
+ // Base
+  custom_planet_land_a_l08: f => {
+    f.tippecanoe = {
+      layer: 'landmass',
+      minzoom: 6,
+      maxzoom: 7
+    }
+    delete f.properties['objectid']
+    delete f.properties['fid_1']
+    return f
+  },
+  custom_planet_land_a: f => {
+    f.tippecanoe = {
+      layer: 'landmass',
+      minzoom: 8,
+      maxzoom: 15
+    } 
+    delete f.properties['objectid']
+    delete f.properties['fid_1']
+    return f
+  },
+ // Admin
   unhq_bndl: f => {
     f.tippecanoe = {
       layer: 'bndl',
@@ -135,7 +155,6 @@ const lut = {
     }
     f.properties._source = 'vmc'
     delete f.properties['objectid']
-
   if (f.properties.level === 'Administrative boundary 2') {
     f.tippecanoe.minzoom = 7
     f.properties.bdytyp = 'Administrative boundary 2'
@@ -148,6 +167,51 @@ const lut = {
   }
     delete f.properties['level']
     delete f.properties['level_code']
+    return f
+  },
+
+//Hydro
+  custom_ne_rivers_lakecentrelines: f => {
+    f.tippecanoe = {
+      layer: 'un_water',
+      minzoom: 6,
+      maxzoom: 7
+    }
+    delete f.properties['objectid']
+    delete f.properties['strokeweig']
+    delete f.properties['featurecla']
+    delete f.properties['dissolve']
+    delete f.properties['note']
+    return f
+  },
+
+//Land Use
+  un_mission_lc_ls: f => {
+    f.tippecanoe = {
+      layer: 'landcover',
+      minzoom: 10,
+      maxzoom: 15
+    }
+  if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
+    delete f.properties['objectid']
+    delete f.properties['landcover']
+  } else {
+    delete f  
+  }
+    return f
+  },
+  un_glc30_global_lc_ms: f => {
+    f.tippecanoe = {
+      layer: 'landcover',
+      minzoom: 6,
+      maxzoom: 9
+    }
+  if (f.properties.gridcode == 20 || f.properties.gridcode == 30 || f.properties.gridcode == 80) {
+    delete f.properties['id']
+    delete f.properties['objectid']
+  } else {
+    delete f  
+  }
     return f
   },
 
@@ -323,24 +387,6 @@ const lut = {
 
 
 
-  // 1. nature
-  un_mission_lc_ls: f => {
-    f.tippecanoe = {
-      layer: 'landcover',
-      minzoom: 10,
-      maxzoom: 15
-    }
-    return f
-  },
-  un_glc30_global_lc_ms: f => {
-    f.tippecanoe = {
-      layer: 'landcover',
-      minzoom: 5,
-      maxzoom: 9
-    }
-    delete f.properties['id']
-    return f
-  },
   // 2. water
   custom_planet_ocean_l08: f => {
     f.tippecanoe = {
@@ -356,30 +402,6 @@ const lut = {
       minzoom: 8,
       maxzoom: 15
     } 
-    return f
-  },
-  custom_planet_land_a_l08: f => {
-    f.tippecanoe = {
-      layer: 'landmass',
-      minzoom: 5,
-      maxzoom: 7
-    }
-    return f
-  },
-  custom_planet_land_a: f => {
-    f.tippecanoe = {
-      layer: 'landmass',
-      minzoom: 8,
-      maxzoom: 15
-    } 
-    return f
-  },
-  custom_ne_rivers_lakecentrelines: f => {
-    f.tippecanoe = {
-      layer: 'un_water',
-      minzoom: 5,
-      maxzoom: 7
-    }
     return f
   },
 
