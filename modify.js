@@ -170,7 +170,7 @@ const lut = {
     return f
   },
 
-//Hydro
+ //Hydro
   custom_ne_rivers_lakecentrelines: f => {
     f.tippecanoe = {
       layer: 'un_water',
@@ -185,7 +185,7 @@ const lut = {
     return f
   },
 
-//Land Use
+ //Land Use
   un_mission_lc_ls: f => {
     f.tippecanoe = {
       layer: 'landcover',
@@ -215,6 +215,67 @@ const lut = {
     return f
   },
 
+ //Places
+  un_global_places: f => {
+    f.tippecanoe = {
+      layer: 'un_place',
+      minzoom: 6,
+      maxzoom: 15
+    }
+  if (f.properties.type === 'Town' || f.properties.type === 'Village') {
+    f.tippecanoe.minzoom = 7
+  } else if (f.properties.type === 'Suburb' || f.properties.type === 'Other Populated Places') {
+    f.tippecanoe.minzoom = 11
+  } else {
+    f.tippecanoe.minzoom = 6 
+  }
+    delete f.properties['objectid']
+    return f
+  },
+  unhq_popp: f => {
+    f.tippecanoe = {
+      layer: 'un_popp',
+      maxzoom: 15
+    }
+
+  if (f.properties.cartolb === 'Alofi' ||f.properties.cartolb === 'Avarua' ||f.properties.cartolb === 'Sri Jayewardenepura Kotte' ) {
+    delete f
+  } else if (f.properties.poptyp_code == 1 || f.properties.poptyp_code == 2) {
+    f.tippecanoe.minzoom = 6 
+  } else if (f.properties.poptyp_code == 3 && f.properties.scl_id_code == 10) {
+    f.tippecanoe.minzoom = 6
+  } else {
+    delete f
+  } 
+   return f
+  },
+
+
+
+//labels
+  unhq_cm02_phyp_anno_l06: f => {
+    f.tippecanoe = {
+      layer: 'lab_water_m',
+      minzoom: 6,
+      maxzoom: 10
+    }
+    return f
+  },
+  unhq_phyp: f => {
+    f.tippecanoe = {
+      layer: 'label',
+      minzoom: 5,
+      maxzoom: 15
+    }
+//edit 2021-01-27 starts
+f.properties.display = 0
+if (f.properties.type_code == 4 && !/Sea|Ocean|Gulf/.test(f.properties.name) ){
+f.properties.display = 1
+}
+//edit 2021-01-27 ends
+
+    return f
+  },
 
  unhq_bnda_a1: f => {
     f.tippecanoe = {
@@ -406,47 +467,7 @@ const lut = {
   },
 
 
-  // 9. place
-  unhq_popp: f => {
-    f.tippecanoe = {
-      layer: 'un_popp',
-      minzoom: 5,
-      maxzoom: 15
-    }
-    return f
-  },
-  un_global_places: f => {
-    f.tippecanoe = {
-      layer: 'un_place',
-      minzoom: 6,
-      maxzoom: 15
-    }
-    f.properties._source = 'un_global_places'
-    return f
-  },
-  unhq_cm02_phyp_anno_l06: f => {
-    f.tippecanoe = {
-      layer: 'lab_water_m',
-      minzoom: 5,
-      maxzoom: 10
-    }
-    return f
-  },
-  unhq_phyp: f => {
-    f.tippecanoe = {
-      layer: 'label',
-      minzoom: 5,
-      maxzoom: 15
-    }
-//edit 2021-01-27 starts
-f.properties.display = 0
-if (f.properties.type_code == 4 && !/Sea|Ocean|Gulf/.test(f.properties.name) ){
-f.properties.display = 1
-}
-//edit 2021-01-27 ends
-
-    return f
-  },
+  // 9. POIs
   un_minusca_pois: f => {
     f.tippecanoe = {
       layer: 'poi_minusca',
