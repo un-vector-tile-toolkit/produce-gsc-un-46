@@ -264,7 +264,7 @@ const lut = {
   unhq_phyp: f => {
     f.tippecanoe = {
       layer: 'label',
-      minzoom: 5,
+      minzoom: 6,
       maxzoom: 15
     }
 //edit 2021-01-27 starts
@@ -432,7 +432,7 @@ f.properties.display = 1
   unhq_bnda05_cty: f => {
     f.tippecanoe = {
       layer: 'bnd_cty',
-      minzoom: 5,
+      minzoom: 6,
       maxzoom: 11
     }
     return f
@@ -440,7 +440,7 @@ f.properties.display = 1
   unhq_bnda_cty_anno_l06: f => {
     f.tippecanoe = {
       layer: 'lab_cty',
-      minzoom: 5,
+      minzoom: 6,
       maxzoom: 11
     }
     return f
@@ -452,7 +452,7 @@ f.properties.display = 1
   custom_planet_ocean_l08: f => {
     f.tippecanoe = {
       layer: 'ocean',
-      minzoom: 5,
+      minzoom: 6,
       maxzoom: 7
     }
     return f
