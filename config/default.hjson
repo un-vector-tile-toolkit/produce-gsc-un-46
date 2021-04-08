@@ -4,7 +4,7 @@
   wtpsThreshold: 50
   monitorPeriod: 10
   Z: 6
-  concurrent: 4
+  concurrent: 3
   maxRetries: 5
   retryDelay: 5000
   port: 5433
