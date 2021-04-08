@@ -1,4 +1,3 @@
-//modify for un46
 const geojsonArea = require('@mapbox/geojson-area')
 
 const preProcess = (f) => {
@@ -47,7 +46,7 @@ const flap = (f, defaultZ) => {
         19 - Math.log2(geojsonArea.geometry(f.geometry)) / 2
       )
       if (mz > 15) { mz = 15 }
-      if (mz < 6) { mz = 6 }
+      if (mz < 5) { mz = 5 }
       return mz
     default:
       return defaultZ ? defaultZ : 10
@@ -56,102 +55,74 @@ const flap = (f, defaultZ) => {
 
 
 const lut = {
-  // boundary
+  // 1. nature
+  un_mission_lc_ls: f => {
+    f.tippecanoe = {
+      layer: 'landcover',
+      minzoom: 10,
+      maxzoom: 15
+    }
+    return f
+  },
+  un_glc30_global_lc_ms: f => {
+    f.tippecanoe = {
+      layer: 'landcover',
+      minzoom: 5,
+      maxzoom: 9
+    }
+    delete f.properties['id']
+    return f
+  },
+  // 2. water
+  custom_planet_ocean_l08: f => {
+    f.tippecanoe = {
+      layer: 'ocean',
+      minzoom: 5,
+      maxzoom: 7
+    }
+    return f
+  },
+  custom_planet_ocean: f => {
+    f.tippecanoe = {
+      layer: 'ocean',
+      minzoom: 8,
+      maxzoom: 15
+    } 
+    return f
+  },
+  custom_planet_land_a_l08: f => {
+    f.tippecanoe = {
+      layer: 'landmass',
+      minzoom: 5,
+      maxzoom: 7
+    }
+    return f
+  },
+  custom_planet_land_a: f => {
+    f.tippecanoe = {
+      layer: 'landmass',
+      minzoom: 8,
+      maxzoom: 15
+    } 
+    return f
+  },
+  custom_ne_rivers_lakecentrelines: f => {
+    f.tippecanoe = {
+      layer: 'un_water',
+      minzoom: 5,
+      maxzoom: 7
+    }
+    return f
+  },
+  // 3. boundary
   unhq_bndl: f => {
     f.tippecanoe = {
-      layer: 'bndl',
+      layer: 'hq_bnd',
+      minzoom: 5,
       maxzoom: 15
     }
-    f.properties._source = 'hq'
-    delete f.properties['objectid']
-    delete f.properties['bdytyp_code']
-
-  if (f.properties.bdytyp === 'Administrative boundary 2') {
-    f.tippecanoe.minzoom = 7
-  } else if (f.properties.bdytyp === 'Administrative boundary 3') {
-    f.tippecanoe.minzoom = 9
-  } else {
-    f.tippecanoe.minzoom = 6
-  }
-  if (f.properties.iso3cd === 'COL' || f.properties.iso3cd === 'COL_ECU' || f.properties.iso3cd === 'COL_PER' || f.properties.iso3cd === 'COL_VEN' || f.properties.iso3cd === 'BRA_COL' || f.properties.iso3cd === 'COL_PAN') {
-    delete f
-  }
     return f
   },
-  custom_unmap_0_bndl: f => {
-    f.tippecanoe = {
-      layer: 'bndl',
-      maxzoom: 15
-    }
-    f.properties._source = 'c'
-    delete f.properties['objectid']
-    delete f.properties['name1']
-    delete f.properties['cnty1']
-    delete f.properties['name2']
-    delete f.properties['cnty2']
-    delete f.properties['adm1_name1']
-    delete f.properties['adm1_name2']
-    delete f.properties['adm2_name1']
-    delete f.properties['adm2_name2']
-  if (f.properties.type === 'Subnational 1') {
-    f.tippecanoe.minzoom = 6
-    f.properties.bdytyp = 'Administrative boundary 1'
-  } else if (f.properties.type === 'Subnational 2') {
-    f.tippecanoe.minzoom = 7
-    f.properties.bdytyp = 'Administrative boundary 2'
-  } else {
-    f.tippecanoe.minzoom = 6
-    f.properties.bdytyp = 'no_type'
-  }
-    delete f.properties['type_code']
-    delete f.properties['type']
-    return f
-  },
-  un_unmik_bndl: f => {
-    f.tippecanoe = {
-      layer: 'bndl',
-       maxzoom: 15
-    }
-    f.properties._source = 'mik'
-    delete f.properties['objectid']
-  if (f.properties.boundary_type === 'Administrative boundary 2') {
-    f.tippecanoe.minzoom = 7
-    f.properties.bdytyp = 'Administrative boundary 2'
-  } else if (f.properties.boundary_type === 'Administrative boundary 3') {
-    f.tippecanoe.minzoom = 9
-    f.properties.bdytyp = 'Administrative boundary 3'
-  } else {
-    f.tippecanoe.minzoom = 7
-    f.properties.bdytyp = 'no_type'
-  }
-    delete f.properties['boundary_type']
-    delete f.properties['boundary_type_code']
-    return f
-  },
-  un_unvmc_igac_bndl: f => {
-    f.tippecanoe = {
-      layer: 'vmc_bnd',
-      maxzoom: 15
-    }
-    f.properties._source = 'vmc'
-    delete f.properties['objectid']
-
-  if (f.properties.level === 'Administrative boundary 2') {
-    f.tippecanoe.minzoom = 7
-    f.properties.bdytyp = 'Administrative boundary 2'
-  } else if (f.properties.level === 'Administrative boundary 3') {
-    f.tippecanoe.minzoom = 9
-    f.properties.bdytyp = 'Administrative boundary 3'
-  } else {
-    f.tippecanoe.minzoom = 6
-    f.properties.bdytyp = f.properties.level
-  }
-    delete f.properties['level']
-    delete f.properties['level_code']
-    return f
-  },
-
-
  unhq_bnda_a1: f => {
     f.tippecanoe = {
       layer: 'hq_bnd',
@@ -212,6 +183,14 @@ const lut = {
     f.tippecanoe = {
       layer: 'c_bnd_lab2',
       minzoom: 9,
+      maxzoom: 15
+    }
+    return f
+  },
+  custom_unmap_0_bndl: f => {
+    f.tippecanoe = {
+      layer: 'c_bnd',
+      minzoom: 5,
       maxzoom: 15
     }
     return f
@@ -304,6 +283,14 @@ const lut = {
     }
     return f
   },
+  un_unvmc_igac_bndl: f => {
+    f.tippecanoe = {
+      layer: 'vmc_bnd',
+      minzoom: 6,
+      maxzoom: 15
+    }
+    return f
+  },
   unhq_bnda05_cty: f => {
     f.tippecanoe = {
       layer: 'bnd_cty',
@@ -320,69 +307,6 @@ const lut = {
     }
     return f
   },
-
-
-
-  // 1. nature
-  un_mission_lc_ls: f => {
-    f.tippecanoe = {
-      layer: 'landcover',
-      minzoom: 10,
-      maxzoom: 15
-    }
-    return f
-  },
-  un_glc30_global_lc_ms: f => {
-    f.tippecanoe = {
-      layer: 'landcover',
-      minzoom: 5,
-      maxzoom: 9
-    }
-    delete f.properties['id']
-    return f
-  },
-  // 2. water
-  custom_planet_ocean_l08: f => {
-    f.tippecanoe = {
-      layer: 'ocean',
-      minzoom: 5,
-      maxzoom: 7
-    }
-    return f
-  },
-  custom_planet_ocean: f => {
-    f.tippecanoe = {
-      layer: 'ocean',
-      minzoom: 8,
-      maxzoom: 15
-    } 
-    return f
-  },
-  custom_planet_land_a_l08: f => {
-    f.tippecanoe = {
-      layer: 'landmass',
-      minzoom: 5,
-      maxzoom: 7
-    }
-    return f
-  },
-  custom_planet_land_a: f => {
-    f.tippecanoe = {
-      layer: 'landmass',
-      minzoom: 8,
-      maxzoom: 15
-    } 
-    return f
-  },
-  custom_ne_rivers_lakecentrelines: f => {
-    f.tippecanoe = {
-      layer: 'un_water',
-      minzoom: 5,
-      maxzoom: 7
-    }
-    return f
-  },
-
 
   // 9. place
   unhq_popp: f => {
