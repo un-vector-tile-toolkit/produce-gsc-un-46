@@ -40,7 +40,7 @@
     un_base::unhq_cm02_phyp_anno_l06
    ]
   defaultDate: 2021-01-01
-  mbtilesDir: mbtiles/un46
+  mbtilesDir: mbtiles/un456
   propertyBlacklist: [
     description
     fid

@@ -7,7 +7,7 @@ code for data conversion(produce)
 
 ## install
 ```console
-git clone https://github.com/un-vector-tile-toolkit/produce-gsc-un
+git clone https://github.com/un-vector-tile-toolkit/produce-gsc-un-46
 cd produce-gsc-un-46
 npm install
 vi config/default.hjson //edit config info, e.g. host, dbUser, dbPassword, etc.
